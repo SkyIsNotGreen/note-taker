@@ -13,14 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(express.static("public"));
 
-let notes = JSON.parse (fs.readFileSync(path.join(__dirname, "/db/db.json")));
+let notes = JSON.parse(fs.readFileSync(path.join(__dirname, "/db/db.json")));
 
 // -- routes --
 
 // get requests
-app.get("/*", (req, res) => res.sendFile(path.join(__dirname, "./index.html")));
-app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "./notes.html")));
-app.get("/api/notes", (req, res) => res.json(notes));
+
+app.get("*/notes", (req, res) => {res.sendFile("notes.html", {root: "public"});});
+app.get("/api/notes", (req, res) => {res.json(notes);});
+
 
 // post request
 // create new note
@@ -37,7 +38,7 @@ app.post("/api/notes", (req, res) => {
     });
 
     // send back new note
-    res.json(newNote);
+    res.json(notes);
 });
 
 // delete request
@@ -62,6 +63,8 @@ app.delete("/api/notes/:id", (req, res) => {
     res.json(note);
 
 });
+
+app.get("/*", (req, res) => {res.sendFile("index.html", {root: "public"});});
 
 // -- server --
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
