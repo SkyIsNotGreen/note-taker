@@ -13,16 +13,16 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(express.static("public"));
 
-let notes = JSON.parse(fs.readFileSync(path.join(__dirname, '/db/db.json')))
+let notes = JSON.parse(fs.readFileSync(path.join(__dirname, "/db/db.json")))
 
 // --- Routes ---
 
 app.get("/notes", (req, res) => {res.sendFile("notes.html", {root: "public"});});
-app.get('/api/notes', (req, res) => res.json(notes));
+app.get("/api/notes", (req, res) => res.json(notes));
 
 // post request
 // create  new note
-app.post('/api/notes', (req, res) => {
+app.post("/api/notes", (req, res) => {
 
     // req.body is an object with the new note
     const newNote = req.body;
@@ -30,7 +30,7 @@ app.post('/api/notes', (req, res) => {
     notes.push(newNote);
 
     // save notes to notes.json
-    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes));
 
     // send back new note
     res.json(notes);
@@ -38,7 +38,7 @@ app.post('/api/notes', (req, res) => {
 
 // delete request
 // delete note
-app.delete('/api/notes/:id', (req, res) => {
+app.delete("/api/notes/:id", (req, res) => {
 
     // get id from url
     const id = req.params.id;
@@ -49,7 +49,7 @@ app.delete('/api/notes/:id', (req, res) => {
     });
 
     // save notes to notes.json
-    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes));
 
     // send back new note 
     res.send("Note deleted.");
